@@ -1,0 +1,25 @@
+$OpenBSD$
+
+Add pledge call
+
+Index: roll.c
+--- roll.c.orig
++++ roll.c
+@@ -12,6 +12,7 @@
+  */
+ 
+ #include "roll.h"
++#include <unistd.h>
+ 
+ int sum_flag     = FALSE; /**< command line argument: sum series     */
+ static int verbose_flag = FALSE; /**< command line argument: verbose output */
+@@ -152,6 +153,9 @@ int roll(int dice) {
+  * \return      Exit status
+  */
+ int main(int argc, char **argv) {
++
++  if (pledge("stdio"), NULL) == -1)
++    err(1, "pledge");
+ 
+   char   expression[EXPRESSION_SIZE];
+   int    expression_size;
